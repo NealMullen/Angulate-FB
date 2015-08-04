@@ -35,7 +35,7 @@ body{
 }
 .nav{
   width: 220px;
-      position: absolute;
+      position: fixed;
       top: 0;
       bottom: 0;
       background-color: #161616;
@@ -73,7 +73,9 @@ body{
   height:48px;
   line-height:30px;
 }
-
+.desc{
+  white-space:nowrap;
+}
 .nav-pills li a{
     white-space:nowrap;
   overflow: hidden;
@@ -98,12 +100,17 @@ body{
 }
 .cases li{
   transition: background 0.35s ease;
+  background: rgba(0,0,0,0.25);
   min-height:90px;
   border-bottom:1px solid rgba(0,0,0,0.35);
   border-top:1px solid rgba(0,0,0,0.35);
   color:#c7c7c7;
   overflow:hidden;
 }
+.cases li + li {
+  border-top:0;
+}
+
 .cases li a.jobID{
   background:#3d81c6;
   line-height:90px;
@@ -115,6 +122,7 @@ body{
   padding:0 24px;
   font-size:22px;
 }
+
 
 a.jobTitle{
   transition: color 0.35s ease;
@@ -159,7 +167,7 @@ img.bg {
 }
 
 .caseArea{
-  margin:10px 0 1px;
+  margin:15px 0 1px;
   color:#3d81c6;
   font-size:12px;
   font-style:italic;

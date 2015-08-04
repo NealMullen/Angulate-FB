@@ -9,9 +9,7 @@
 
   </head>
   <body>
-    <!--
-<img class="bg" src="http://www.imgbase.info/images/safe-wallpapers/cartoons/adventure_time/22612_adventure_time.jpg" alt="" />
--->
+
     <img class="bg" src="http://www.w8themes.com/wp-content/uploads/2013/11/Best-Adventure-Time-Wallpaper.jpg" alt="" />
 <div ng-controller="TabsDemoCtrl">
 
@@ -20,26 +18,7 @@
 
   <tabset vertical="true" type="pills">
     <tab ng-repeat="tab in tabs" disable="tab.disabled">
-    count: {{count}}
     <tab-heading><span class="jobCount">({{tab.totalJobs}})</span> {{tab.groupName}}</tab-heading>
-
-
-<!--https://blog.nraboy.com/2014/12/use-ngstorage-angularjs-local-storage-needs/
-http://jsfiddle.net/4q0e57f3/28/
-<tabset>
-        <tab 
-            ng-repeat="t in tabs" 
-            heading="{{t.name}}"
-            ng-init="isActive = isActiveTab(t.name, $index)"
-            active="isActive"
-            select="setActiveTab(t.name)">
-                <div>regerg</div>
-        </tab>
-    </tabset>
-    -->
-      <!--
-       
-        <h3>{{tab.groupName}}</h3>-->
       
         <div ng-repeat="(priority, cases) in tab.jobsList">
           
@@ -52,7 +31,7 @@ http://jsfiddle.net/4q0e57f3/28/
                 <p class="caseArea">Area: Smaller brands</p>
                   <a href="{{case.url}}" class="jobTitle">{{case.title}}</a>
       
-                <p ng-bind-html="case.desc | unsafe "></p>
+                <p class="desc" ng-bind-html="case.desc | unsafe "></p>
 
 
               </li>
