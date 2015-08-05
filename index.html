@@ -9,29 +9,28 @@
   </head>
   <body>
   <img class="bg" src="http://www.w8themes.com/wp-content/uploads/2013/11/Best-Adventure-Time-Wallpaper.jpg" alt="" />
-  <div ng-controller="ModalDemoCtrl">
+
+<div ng-controller="ModalDemoCtrl">
     <script type="text/ng-template" id="myModalContent.html">
         <div class="modal-header">
-            <h3 class="modal-title">I'm a modal!</h3>
+            <h3>I'm a modal!</h3>
         </div>
-        <div class="modal-body">
-            <ul>
-                <li ng-repeat="item in items">
-                    <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
+        <form ng-submit="submit()">
+          <div class="modal-body">
+<div ng-controller="ExampleController">
+            
+  <label for="ng-change-example2">Confirmed <input type="checkbox" ng-model="confirmed" ng-change="change()" id="ng-change-example1" /></label><br />
+  <tt>debug = {{confirmed}}</tt><br/>
+  </div>
+          </div>
+          <div class="modal-footer">
+              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+              <input type="submit" class="btn primary-btn" value="Submit" />
+          </div>
+        </form>
     </script>
 
-    <button class="btn btn-default" ng-click="open()">Open me!</button>
-    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-    <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-    <button class="btn btn-default" ng-click="toggleAnimation()">Toggle Animation ({{ animationsEnabled }})</button>
+    <button class="btn" ng-click="open()">Open me!</button>
     <div ng-show="selected">Selection from a modal: {{ selected }}</div>
 </div>
 

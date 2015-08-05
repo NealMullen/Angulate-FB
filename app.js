@@ -583,55 +583,43 @@ console.log(JSON.stringify(projectGroups, undefined, 4));
     
 });
 */
-
 angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 
-  $scope.items = ['item1', 'item2', 'item3'];
+    $scope.user = {
+        user: 'name',
+        password: null
+    };
 
-  $scope.animationsEnabled = true;
+    $scope.open = function () {
 
-  $scope.open = function (size) {
-
-    var modalInstance = $modal.open({
-      animation: $scope.animationsEnabled,
-      templateUrl: 'myModalContent.html',
-      controller: 'ModalInstanceCtrl',
-      size: size,
-      resolve: {
-        items: function () {
-          return $scope.items;
-        }
-      }
-    });
-
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-
-  $scope.toggleAnimation = function () {
-    $scope.animationsEnabled = !$scope.animationsEnabled;
-  };
-
+        $modal.open({
+            templateUrl: 'myModalContent.html',
+            backdrop: true,
+            windowClass: 'modal',
+            controller: function ($scope, $modalInstance, $log, user) {
+                $scope.user = user;
+                $scope.submit = function () {
+                    $log.log('Submiting user info.');
+                    $log.log(user);
+                    $modalInstance.dismiss('cancel');
+                }
+                $scope.cancel = function () {
+                    $modalInstance.dismiss('cancel');
+                };
+            },
+            resolve: {
+                user: function () {
+                    return $scope.user;
+                }
+            }
+        });
+    };
 });
 
-// Please note that $modalInstance represents a modal window (instance) dependency.
-// It is not the same as the $modal service used above.
-
-angular.module('ui.bootstrap.demo').controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
-
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
-
-  $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});
+angular.module('ui.bootstrap.demo')
+    .controller('ExampleController', ['$scope', function($scope) {
+      $scope.counter = 0;
+      $scope.change = function() {
+        $scope.counter++;
+      };
+    }]);
