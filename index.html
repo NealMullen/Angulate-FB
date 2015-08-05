@@ -9,8 +9,7 @@
   </head>
   <body>
   <img class="bg" src="http://www.w8themes.com/wp-content/uploads/2013/11/Best-Adventure-Time-Wallpaper.jpg" alt="" />
-
-<div ng-controller="ModalDemoCtrl">
+  <div class="controlBar" ng-controller="ModalDemoCtrl">
     <script type="text/ng-template" id="myModalContent.html">
         <div class="modal-header">
             <h3>I'm a modal!</h3>
@@ -30,11 +29,11 @@
         </form>
     </script>
 
-    <button class="btn" ng-click="open()">Open me!</button>
+    <button class="btn" ng-click="open()">Notifications</button>
     <div ng-show="selected">Selection from a modal: {{ selected }}</div>
 </div>
 
-  <div class="controlBar">
+
     
   </div>
   <div ng-controller="TabsDemoCtrl">
