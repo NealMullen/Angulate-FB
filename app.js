@@ -8,6 +8,7 @@ angular.module('ui.bootstrap.demo').filter('substr', function() {
       }
     }
 });
+
 angular.module('ui.bootstrap.demo').filter('cut', function () {
         return function (value, wordwise, max, tail) {
             if (!value) return '';
@@ -583,6 +584,11 @@ console.log(JSON.stringify(projectGroups, undefined, 4));
     
 });
 */
+
+angular.module('ui.bootstrap.demo').controller('standardSwitch', function ($scope) {
+  $scope.switch = 'off';
+});
+
 angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($scope, $modal, $log) {
 
     $scope.user = {

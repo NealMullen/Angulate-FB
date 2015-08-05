@@ -11,16 +11,28 @@
   <img class="bg" src="http://www.w8themes.com/wp-content/uploads/2013/11/Best-Adventure-Time-Wallpaper.jpg" alt="" />
   <div class="controlBar" ng-controller="ModalDemoCtrl">
     <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-            <h3>I'm a modal!</h3>
+    <form ng-submit="submit()" ng-controller="ExampleController">
+        <div class="modal-header" ng-controller="standardSwitch">
+            <h3>Notification Settings </h3>
+
+         
         </div>
-        <form ng-submit="submit()">
+        
           <div class="modal-body">
-<div ng-controller="ExampleController">
-            
+             <div class="toggle-bg {{switch}}" ng-init="switch : 'off'">
+      
+      <input type="radio" name="toggle" value="off" ng-model="switch">
+      <input type="radio" name="toggle" value="on" ng-model="switch">
+      <span class="switch {{switch}}"></span>
+          <p><strong>State</strong>: {{switch}}</p>
+    </div>
+
+    <div style="clear:both;"><br /><br /><br /><br /></div>
+
+     <label for="ng-change-example2">Confirmed <input type="checkbox" ng-model="confirmed" ng-change="change()" id="ng-change-example1" /></label>
   <label for="ng-change-example2">Confirmed <input type="checkbox" ng-model="confirmed" ng-change="change()" id="ng-change-example1" /></label><br />
   <tt>debug = {{confirmed}}</tt><br/>
-  </div>
+  
           </div>
           <div class="modal-footer">
               <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
