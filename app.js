@@ -178,6 +178,14 @@ angular.module('ui.bootstrap.demo').filter('unsafe', function ($sce) {
     };
 });
 
+
+ angular.module('ui.bootstrap.demo').filter('makeUppercase', function () {
+  return function (item) {
+      var subString = item.match(">(.*)<");
+      return subString[1];
+  };
+});
+
 angular.module('ui.bootstrap.demo').controller('TabsDemoCtrl', function ($scope, $window) {
 
 
@@ -191,6 +199,7 @@ angular.module('ui.bootstrap.demo').controller('TabsDemoCtrl', function ($scope,
   $scope.getClass = function(obj){
     return $scope.addClass.replace("{0}", obj).replace(/(\(.*\))/g, '')
   };
+
 
   $scope.tabs = [
     {

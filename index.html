@@ -2016,9 +2016,10 @@
               <ul class="cases">
                 <li ng-repeat="case in cases">
                   <a href="{{case.url}}" class="jobID">{{case.id}}</a>
-                  <p class="caseArea">Area: Smaller brands</p>
+                  <p class="caseArea">Area: {{case.area}}</p>
                     <a href="{{case.url}}" class="jobTitle">{{case.title}}</a>
                   <p class="desc"><a href="{{case.url}}" ng-bind-html="case.desc | unsafe "></a></p>
+                  <p class="lastEdit">(Last editted by: {{case.lastUpdatedBy | makeUppercase}})</p>
                 </li>
               </ul>
             </div>
