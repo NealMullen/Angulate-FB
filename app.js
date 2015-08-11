@@ -1,3 +1,146 @@
+console.clear();
+var caseURL_col=".col_0";
+var project_col=".col_1";
+var title_col=".col_2";
+var lastUpdated_col=".col_3";
+var priority_col=".col_4";
+var area_col=".col_5";
+var lastEditedBy_col=".col_13";
+
+
+/**
+ * Object contstructor for group projects
+ */
+function projectGroup(ID, groupName, jobsList) {
+  this.ID = ID;
+  this.groupName = groupName;
+  this.jobsList = jobsList;
+}
+
+/**
+ * Object contstructor for project priorities
+ */
+function projectPriorities(priorityTitle, jobsList) {
+  this.priority = priorityTitle;
+  this.jobs = jobsList;
+}
+
+/**
+ * Object contstructor for each case
+ */
+function Case(id, title, desc, priority, url, parentGroupId, lastUpdatedBy,area) {
+  this.id = id;
+  this.title = title;
+  this.desc = desc;
+  this.priority = priority;
+  this.url = url;
+  this.parentGroupId = parentGroupId;
+  this.lastUpdatedBy = lastUpdatedBy;
+  this.area = area;
+}
+
+var projectGroups=[];
+var groupIDs=[];
+
+
+
+/*for (var i = 0; i < groupIDs.length; ++i) {
+  var group = $("#group_"+groupIDs[i]);
+    $(group).each(function( index ) {
+      $case = $(this).find("tr[ix]"); 
+    });
+}*/
+var cases = [];
+$( "tr[ix]" ).each(function( index ) {
+  var id = $(this).attr( "ix" );
+  var url = $(this).find(".titleShifted a").attr("href");
+  var title = $(this).find(".titleShifted a").html();
+  var desc = $(this).find(".titleExtra").html();
+  var lastEdittedBy =$(this).find(lastEditedBy_col).find(".person").html();
+  var area = $(this).find(area_col).find("span").html();
+  var priority = getPriority($(this));
+  var parentGroupId = getGroupID($(this));
+  
+  var newCase = new Case(Number(id), title, desc, priority, url, parentGroupId,lastEdittedBy,area);
+  cases.push(newCase);
+
+});
+
+$( "[id*=groupHeader_]" ).each(function( index ) {
+  if($(this).attr('id').indexOf('prototype') == -1) {
+  var title =  $(this).find('.groupHeader').html() ;
+  var groupID = index;
+  var jobs = "";
+  var project = new projectGroup(groupID,title,jobs);
+  projectGroups.push(project);
+  groupIDs.push(groupID);
+  }
+});
+
+function getPriority(el){
+  var priority = el.find( "span:contains(' – ')" );
+  priority = priority.html();
+  return priority;
+}
+
+function getGroupID(el){
+  var group = el.closest( "tbody" );
+  var id = group.attr("id");
+  var idNum = id.substr(id.indexOf("_") + 1);
+  return idNum;
+}
+
+//console.log("CASES");
+//console.log(JSON.stringify(cases, undefined, 4));
+console.log("GROUPS");
+//console.log(JSON.stringify(projectGroups, undefined, 4));
+
+
+for (var i = 0; i < projectGroups.length; ++i) {
+  var p1Cases =[];
+  var p2Cases =[];
+  var p3Cases =[];
+  var p4Cases =[];
+  var p5Cases =[];
+  var totalJobs = 0;
+  var sortedCases = {};
+  var ID = projectGroups[i]["ID"];
+   for (var j = 0; j < cases.length; ++j) {
+     
+     if(ID == cases[j]["parentGroupId"]){
+       totalJobs++;
+       var x = cases[j]["priority"];
+       x = x.charAt(0);
+       switch(x){
+         case '1':
+           p1Cases.push(cases[j]);
+           break;
+          case '2':
+           p2Cases.push(cases[j]);
+           break;
+          case '3':
+           p3Cases.push(cases[j]);
+           break;
+          case '4':
+           p4Cases.push(cases[j]);
+           break;
+          case '5':
+           p5Cases.push(cases[j]);
+           break;
+          default:
+           break;
+       }
+        sortedCases['1']=p1Cases;
+        sortedCases['2']=p2Cases;
+        sortedCases['3']=p3Cases;
+        sortedCases['4']=p4Cases;
+        sortedCases['5']=p5Cases;
+        projectGroups[i]['jobsList']=sortedCases;
+       projectGroups[i]['totalJobs'] = totalJobs;
+     }
+   }    
+}
+
 angular.module('ui.bootstrap.demo', ['ui.bootstrap']);
 angular.module('ui.bootstrap.demo').filter('substr', function() {
     return function(input, length) {
@@ -49,219 +192,213 @@ angular.module('ui.bootstrap.demo').controller('TabsDemoCtrl', function ($scope,
     return $scope.addClass.replace("{0}", obj).replace(/(\(.*\))/g, '')
   };
 
-  $scope.tabs = [  
-   {  
-      "ID":0,
-      "groupName":"Cardnet BAU",
-     "totalJobs":7,
-      "jobsList":{  
-         "1":[  
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            },
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            }
-         ],
-         "2":[  
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            }
-         ],
-         "3":[  
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            }
-         ],
-         "4":[  
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            },
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            },
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            },
-            {  
-               "id":48085,
-               "title":"Archived Webinar- Regulatory link",
-               "desc":"Holla Systems,&nbsp; Know you're out partying, but could we deploy this to stag-stable on monday?&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?48085#570542",
-               "parentGroupId":"0"
-            }
-         ],
-         "5":[  
-
-         ]
-      }
-   },
-   {  
-      "ID":1,
-      "groupName":"LBG - COM - Commercial Banking",
-     "totalJobs":2,
-      "jobsList":{  
-         "1":[  
-
-         ],
-         "2":[  
-            {  
-               "id":48073,
-               "title":"Currency Call Rates 03.08.15",
-               "desc":"Hi&nbsp; Can you please push this live on Monday morning, by 10am?&nbsp; Thanks&nbsp; Beatriz",
-               "priority":"2 – Urgent",
-               "url":"default.asp?48073#570411",
-               "parentGroupId":"1"
-            }
-         ],
-         "3":[  
-
-         ],
-         "4":[  
-
-         ],
-         "5":[  
-
-         ]
-      }
-   },
-   {  
-      "ID":2,
-      "groupName":"LBG Commercial Finance",
-     "totalJobs":1,
-      "jobsList":{  
-         "1":[  
-
-         ],
-         "2":[  
-            {  
-               "id":46578,
-               "title":"New Glossary on Commercial Finance DIGLLCF12034BPR",
-               "desc":"This is now correct on stag can you check please.",
-               "priority":"2 – Urgent",
-               "url":"default.asp?46578#570504",
-               "parentGroupId":"2"
-            }
-         ],
-         "3":[  
-
-         ],
-         "4":[  
-
-         ],
-         "5":[  
-
-         ]
-      }
-   },
-   {  
-      "ID":3,
-      "groupName":"LBG Intermediaries BAU",
-     "totalJobs":5,
-      "jobsList":{  
-         "1":[  
-
-         ],
-         "2":[  
-
-         ],
-         "3":[  
-
-         ],
-         "4":[  
-            {  
-               "id":47903,
-               "title":"List of Redirects- BM Savings",
-               "desc":"**PD.&nbsp; The whole site is redirected to the new domian - so every URL will redirect... unless I'm missing to the point of what's being asked.&nbsp; Noticed some of the redirects aren't working. Have passed job over to systems.",
-               "priority":"4 – Normal",
-               "url":"default.asp?47903#569687",
-               "parentGroupId":"3"
-            }
-         ],
-         "5":[  
-
-         ]
-      }
-   },
-   {  
-      "ID":4,
-      "groupName":"Lloyds International - CMS BAU",
-     "totalJobs":3,
-      "jobsList":{  
-         "1":[  
-
-         ],
-         "2":[  
-
-         ],
-         "3":[  
-            {  
-               "id":45384,
-               "title":"*full content sync* - Islands commercial 2 x new products",
-               "desc":"Hi Support,&nbsp; Could we update changes below-&nbsp;https://realise.fogbugz.com/default.asp?45384#BugEvent.570521&nbsp; https://auth.lb-islands-com.realise.com/products-and-services/deposit-accounts/32-day-notice-account/#635739551863644685&nbsp; Thanks",
-               "priority":"3 – High priority",
-               "url":"default.asp?45384#570530",
-               "parentGroupId":"4"
-            }
-         ],
-         "4":[  
-            {  
-               "id":48022,
-               "title":"Accessibility switcher not working on C-DEV",
-               "desc":"Support,&nbsp; Could you QA -&nbsp;http://dev.lb-international.realise.com/ and see if we can deploy case 47874 to live?&nbsp; Already opened another case that Nick included in comment-&nbsp;https://realise.fogbugz.com/default.asp?48022#BugEvent.569672 Here it ...",
-               "priority":"4 – Normal",
-               "url":"default.asp?48022#570527",
-               "parentGroupId":"4"
-            }
-         ],
-         "5":[  
-            {  
-               "id":47804,
-               "title":"Active Standards Report. ",
-               "desc":"~putting down~&nbsp; Applied formula / formatting to make it clear which jobs need action / investigation.",
-               "priority":"5 – Fix If Time",
-               "url":"default.asp?47804#568620",
-               "parentGroupId":"4"
-            }
-         ]
-      }
-   }
+  $scope.tabs = [
+    {
+        "ID": 0,
+        "groupName": "Cases in LBG - BOS Business BAU",
+        "jobsList": {
+            "1": [],
+            "2": [
+                {
+                    "id": 48191,
+                    "title": "BoS CI - eForms phase 0.1 (Keycard Page)",
+                    "desc": "Hi Support,&nbsp; Please see my amends in the attached doc.&nbsp; Thanks,&nbsp; Henny",
+                    "priority": "2 – Urgent",
+                    "url": "default.asp?48191#572367",
+                    "parentGroupId": "0",
+                    "lastUpdatedBy": "<fb:x>Henrietta Green</fb:x>",
+                    "area": "BAU"
+                }
+            ],
+            "3": [],
+            "4": [],
+            "5": []
+        },
+        "totalJobs": 1
+    },
+    {
+        "ID": 1,
+        "groupName": "Cases in LBG - COM - Commercial Banking",
+        "jobsList": {
+            "1": [],
+            "2": [],
+            "3": [
+                {
+                    "id": 45433,
+                    "title": "Acquisiton Finance - Stackhouse Case",
+                    "desc": "Hi Support,&nbsp; picking this up again after change freeze, article is showing on the latest deals page however breadcrumbs still not showing on article.&nbsp; Can this taxonomy issue be addressed?&nbsp; Thanks,&nbsp; Henny",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?45433#572254",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Henrietta Green</fb:x>",
+                    "area": "BAU"
+                },
+                {
+                    "id": 46329,
+                    "title": "Acquisition Finance - Rivieria Travel",
+                    "desc": "Hi Support,&nbsp; No breadcrumbs showing on this page - can this taxonomy issue be looked at?&nbsp; Thanks,&nbsp; Henny",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?46329#572255",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Henrietta Green</fb:x>",
+                    "area": "BAU"
+                },
+                {
+                    "id": 48070,
+                    "title": "Lloyds - Commercial - Loans RCF and Term",
+                    "desc": "Hi Support,&nbsp; Can this be synced to live please?&nbsp; Thanks,&nbsp; Henny",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?48070#572249",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Henrietta Green</fb:x>",
+                    "area": "BAU"
+                },
+                {
+                    "id": 48185,
+                    "title": "Economic Data Analysis Report 31/07",
+                    "desc": "Hi Support&nbsp; The page looks good.&nbsp; However on&nbsp;http://stag-brc.lbcmcms.co.uk/home/ the new report is not pulling through into the accordion.&nbsp; Does something need to be done, or will it show up once the content is published?&nbsp; Thanks Johanna",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?48185#572321",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Rick O'Neill</fb:x>",
+                    "area": "BAU"
+                },
+                {
+                    "id": 48201,
+                    "title": "Business Confidence Barometer August 2015",
+                    "desc": "Hi Support&nbsp; The text in the methodological note does not match the PDF&nbsp; PDF =&nbsp;This month’s Lloyds Bank Commercial Business Barometer was conducted during 13-17 July 2015. The sample size is 200 companies&nbsp; Page =&nbsp;This month’s Lloyds Bank Commercial ...",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?48201#572337",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Johanna Hope</fb:x>",
+                    "area": "BAU"
+                },
+                {
+                    "id": 48216,
+                    "title": "Singapore Privacy&nbsp; Notice",
+                    "desc": "Hi Support&nbsp; I have noticed two issues&nbsp; 1) Using your information to help prevent terrorism and crime&nbsp; Doc = The relevant authorities and governmental bodies also require us to screen applications that are made to us&nbsp; Web = The Government also ...",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?48216#572390",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Johanna Hope</fb:x>",
+                    "area": "BAU"
+                },
+                {
+                    "id": 48218,
+                    "title": "Dodd Frank page updates",
+                    "desc": "~pu",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?48218#572389",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Nick Watton</fb:x>",
+                    "area": "BAU"
+                },
+                {
+                    "id": 48219,
+                    "title": "Allan Ramsay Biog Image ",
+                    "desc": "Hi Support,&nbsp; Could you re-size the image so that it matches the other profile images and add as requested?&nbsp; Thanks,&nbsp; Henny",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?48219#572242",
+                    "parentGroupId": "1",
+                    "lastUpdatedBy": "<fb:x>Henrietta Green</fb:x>",
+                    "area": "BAU"
+                }
+            ],
+            "4": [],
+            "5": []
+        },
+        "totalJobs": 8
+    },
+    {
+        "ID": 2,
+        "groupName": "Cases in LBG - Corporate Online",
+        "jobsList": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [
+                {
+                    "id": 48190,
+                    "title": "Additional copy to COL help page",
+                    "desc": "Done.",
+                    "priority": "4 – Normal",
+                    "url": "default.asp?48190#572298",
+                    "parentGroupId": "2",
+                    "lastUpdatedBy": "<fb:x>Rick O'Neill</fb:x>",
+                    "area": "COL"
+                }
+            ],
+            "5": []
+        },
+        "totalJobs": 1
+    },
+    {
+        "ID": 3,
+        "groupName": "Cases in LBG Intermediaries BAU",
+        "jobsList": {
+            "1": [],
+            "2": [],
+            "3": [
+                {
+                    "id": 43444,
+                    "title": "Question re page titles",
+                    "desc": "Hi support,&nbsp; Please go ahead with Neals comment below to ensure the two pages are treated separately and ensure page titles (line 49 and 50 are updated as per brief below) :&nbsp; ...",
+                    "priority": "3 – High priority",
+                    "url": "default.asp?43444#572184",
+                    "parentGroupId": "3",
+                    "lastUpdatedBy": "<fb:x>Amrit Kaur</fb:x>",
+                    "area": "Halifax"
+                }
+            ],
+            "4": [],
+            "5": []
+        },
+        "totalJobs": 1
+    },
+    {
+        "ID": 4,
+        "groupName": "Cases in Lloyds International - CMS BAU",
+        "jobsList": {
+            "1": [],
+            "2": [
+                {
+                    "id": 48255,
+                    "title": "Private banking links",
+                    "desc": "**PU",
+                    "priority": "2 – Urgent",
+                    "url": "default.asp?48255#572391",
+                    "parentGroupId": "4",
+                    "lastUpdatedBy": "<fb:x>Jennifer Smith</fb:x>",
+                    "area": "International site BAU"
+                }
+            ],
+            "3": [],
+            "4": [
+                {
+                    "id": 48022,
+                    "title": "Accessibility switcher not working on C-DEV",
+                    "desc": "As this issue was not on QA and Auth, I imagine the code Omar backed-out is not present on these environments, therefore this will not require a code-sync.&nbsp; Omar, can you please confirm this?&nbsp; Neal",
+                    "priority": "4 – Normal",
+                    "url": "default.asp?48022#571903",
+                    "parentGroupId": "4",
+                    "lastUpdatedBy": "<fb:x>neal.mullen</fb:x>",
+                    "area": "_Default"
+                },
+                {
+                    "id": 48239,
+                    "title": "Review of Brief ",
+                    "desc": "*review only*&nbsp; Support,&nbsp; Could you have a look at the attached PPT and annotate where we would require new page formats, basically identify if any of the changes briefed in are hard coded.&nbsp; Thanks!",
+                    "priority": "4 – Normal",
+                    "url": "default.asp?48239#572200",
+                    "parentGroupId": "4",
+                    "lastUpdatedBy": "<fb:x>Amrit Kaur</fb:x>",
+                    "area": "International site BAU"
+                }
+            ],
+            "5": []
+        },
+        "totalJobs": 3
+    }
 ];
 
 
